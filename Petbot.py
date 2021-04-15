@@ -3,13 +3,9 @@ import random
 import asyncio
 import os
 from discord.ext import commands
-from equation_generator import EquationGenerator
-from database import Database
+
 
 client = commands.Bot(command_prefix = '$')
-e_generator = EquationGenerator()
-op_list = ["+", "*", "/", "-"]
-db = Database()
 
 @client.event
 async def on_ready():
