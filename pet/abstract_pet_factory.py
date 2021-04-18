@@ -10,5 +10,3 @@ class AbstractPetFactory:
         self.pet = AbstractPet(name, random.choice(list(Species)), random.choice(list(Size)), random.choice(list(AbilityType)), random.choice(list(AbilityType)), random.choice(list(Color)), random.choice(list(Rarity)))
         print("-Pet Created: ", self.pet.name, random.choice(list(Species)), random.choice(list(Size)), random.choice(list(AbilityType)), random.choice(list(AbilityType)), random.choice(list(Color)), random.choice(list(Rarity)))
         return self.pet
-
-
