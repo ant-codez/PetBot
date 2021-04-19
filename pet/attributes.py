@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+# these are the values that the pet attributes can contain
+
 class Species(Enum):
     TINDERING = auto()
     FLEETING = auto()

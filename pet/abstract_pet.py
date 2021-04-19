@@ -1,5 +1,6 @@
-from attributes import Species, Size, AbilityType, Color, Rarity
+from pet.attributes import Species, Size, AbilityType, Color, Rarity
 
+# this are the attributes that a pet has
 class AbstractPet:
     def __init__(self, name:str, species: Species, size: Size, ability_type: AbilityType, subtype: AbilityType, color: Color, rarity: Rarity):
         self.name: str = name

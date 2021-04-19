@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from discord.ext import commands as discord_commands
 
 import textwrap
@@ -14,6 +15,7 @@ class Bot:
         async def on_ready():
             print("Ready!")
 
+        # ping with variable arguments
         @self.client.command()
         async def ping(ctx, *args):
             await ctx.send(f'You pinged PetBot! {args}')
@@ -32,6 +34,7 @@ class Bot:
 
         """
 
+        # $userinfo will print some user information
         @self.client.command()
         async def userinfo(ctx):
             output = textwrap.dedent(f"""\
@@ -43,6 +46,7 @@ class Bot:
             
             await ctx.send(output)
 
+        # $guildinfo will print some guild information
         @self.client.command()
         async def guildinfo(ctx):
             output: str  = textwrap.dedent(f"""\
@@ -56,6 +60,7 @@ class Bot:
             
             await ctx.send(output)
 
+        # $botinfo will print some bot information
         @self.client.command()
         async def botinfo(ctx):
             output: str = textwrap.dedent(f"""\
@@ -65,6 +70,7 @@ class Bot:
             
             await ctx.send(output)
 
+        # $commands with print the available commands
         @self.client.command()
         async def commands(ctx):
             output: str = "commands: "
@@ -75,4 +81,6 @@ class Bot:
             
             await ctx.send(output)
 
+    # this will start the bot and must be called after commands are constructed
+    def start(self):
         self.client.run(self.token)
