@@ -7,7 +7,8 @@ from pet.abstract_pet import AbstractPet
 import asyncio
 
 #TODO: get a database working
-#from database import Database
+from database import Database
+db = Database()
 
 
 class PetBot(Bot):
@@ -47,10 +48,15 @@ class PetBot(Bot):
             except asyncio.TimeoutError:
                 await ctx.send("Timeout")
             
-            if self.players[ctx.author.id].hatchEgg(name) != None:
+            #Check to see if pet name is taken, if not create pet        
+            if db.checkForPet(ctx.author.id, name):
+                pet = self.players[ctx.author.id].hatchEgg(name)
                 await ctx.send("Congrats you hatched an egg")
+                output = f"{pet.name}, {pet.species.name}, {pet.size.name}, {pet.ability_type.name}, {pet.subtype.name}, {pet.color.name}, {pet.rarity.name}"
+                db.savePetToDB(ctx.author.id, ctx.author.name, pet)
+                await ctx.send(output)
             else:
-                await ctx.send("You're carrying too many eggs!")
+                await ctx.send("You already have a pet with this name!")
 
         # get a particular pet's stats
         @self.client.command()
