@@ -17,10 +17,6 @@ class PetBot(Bot):
 
         # Define the specific pet bot commands
         self.players = {}
-        # temporary function until every thing is abstracted further
-        def get_pet_stats(self, pet: AbstractPet):
-            output = f"-Stats: {pet.name}, {pet.species}, {pet.size}, {pet.ability_type}, {pet.subtype}, {pet.color}, {pet.rarity}"
-            return output
 
         # give the player an egg
         @self.client.command()
