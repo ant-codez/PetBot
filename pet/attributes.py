@@ -3,9 +3,30 @@ from enum import Enum, auto
 # these are the values that the pet attributes can contain
 
 class Species(Enum):
-    TINDERING = auto()
-    FLEETING = auto()
-    LIQUIDY = auto()
+    DOG = auto()
+    CAT = auto()
+    MOUSE = auto()
+    FOX = auto()
+    BEAR = auto()
+    PANDA = auto()
+    KOALA = auto()
+    HAMSTER = auto()
+    TIGER = auto()
+    LION = auto()
+    COW = auto()
+    PIG = auto()
+    FROG = auto()
+    CHICKEN = auto()
+    PENGUIN = auto()
+    EAGLE = auto()
+    OWL = auto()
+    BAT = auto()
+    WOLF = auto()
+    HOG = auto()
+    HORSE = auto()
+    UNICORN = auto()
+    BEE = auto()
+    
 
 class AbilityType(Enum):
     GRASS = auto()
@@ -30,6 +51,10 @@ class Color(Enum):
     GREEN = auto()
     BLUE = auto()
     INDIGO = auto()
+    BROWN = auto()
+    BLACK = auto()
+    WHITE = auto()
+    ORANGE = auto()
 
 class Rarity(Enum):
     COMMON = auto()

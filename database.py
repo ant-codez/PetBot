@@ -1,5 +1,6 @@
 import psycopg2
 import yaml
+from player import Player
 
 
 class Database:
@@ -60,17 +61,20 @@ class Database:
             from "UserInfo".users
             where "id" = {user_id};
         """)
+        
+        user_record = self.cursor.fetchone()
 
         # fetch the record from our execution
-        user_record = self.cursor.fetchone()
-        print(f"name = {user_record[0]} eggs={user_record[2]}")
-
-        if user_record == None:
+        try:
+            p = Player(user_record[0], user_record[2])
+            print(f"name = {user_record[0]} userID={user_record[2]}")
+            print("user exists!")
+            print("player class:",p)
+        except:
             print("user does not exist!")
             p = None
-        else:
-            print("user exists!")
-            p = player(user_record[0], user_record[1], user_record[2])
+            
+            
 
         # close the cursor
         self.cursor.close()
@@ -102,7 +106,7 @@ class Database:
         print(f"logged pet info successfully")
         print(pet)
     
-    #check if Pet name is found in the database
+    #check if Pet name is found in the database, is so return pet object. Else return False
     def checkForPet(self, user_id, petName):
         self.cursor = self.session.cursor()
 
@@ -112,11 +116,23 @@ class Database:
             user_record = self.cursor.fetchone()
             print(user_record)
             print("pet name: ", user_record[0])
-            return False
+            return user_record
         except:
             print("No pet found, hatching egg...")
-            return True
+            return False
             
         # commit and unbind cursor
         self.session.commit()
         self.cursor.close()
+    
+    #check how many eggs the player has
+    def checkTotalEggs(self, user_id):
+        self.cursor = self.session.cursor()
+        
+        try:
+            self.cursor.execute(f"SELECT * FROM \"UserInfo\".users WHERE id = {user_id}")
+            # fetch the record from our execution
+            user_record = self.cursor.fetchone()
+            print(user_record)
+        except:
+            print("idk")
