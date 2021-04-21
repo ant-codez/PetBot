@@ -1,16 +1,12 @@
-import discord
-import random
-import asyncio
-import os
-from discord.ext import commands
+from pet.abstract_pet_factory import AbstractPetFactory
+from pet.abstract_pet import AbstractPet
 
-speciesList = ['Dog', 'Cat', 'Turtle']
-colorList = ['Red', 'Brown', 'Black', 'Yellow', 'Gold']
+# temporary because it doesn't make sense for the player to have a factory
+factory = AbstractPetFactory()
 
 class Player:
-    
-    def __init__(self, username, id):
-        self.name = username
+    def __init__(self, name, id):
+        self.name = name
         self.id = id
         self.eggs = 1
         self.pets = {}
@@ -19,27 +15,10 @@ class Player:
         self.eggs += 1
         return True
     
-    def hatchEgg(self, petName):
+    def hatchEgg(self, name: str):
         if self.eggs > 0:
-            self.pets[petName] = Pet(random.choice(speciesList), random.choice(colorList), petName)
-            print(self.pets[petName].getStats(), petName)
-            return True
+            self.pets[name] = factory.create_pet(name)
+            return self.pets[name]
         else:
-            return False
+            return None
         
-        
-
-
-class Pet:
-    
-    def __init__(self, species, color, name):
-        self.species = species
-        self.color = color
-        self.name = name
-        self.closeNess = 0
-    
-    def pet(self):
-        closeNess += random.randint(0,7)
-    
-    def getStats(self):
-        return f"{self.name} is a {self.species}. It is {self.color} and has a closness of {self.closeNess} to you."
