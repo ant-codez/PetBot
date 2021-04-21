@@ -1,6 +1,6 @@
 from discord_api.bot import Bot
 
-from player import Player
+from Player import Player
 from pet.abstract_pet import AbstractPet
 
 #TODO: remove this dependency

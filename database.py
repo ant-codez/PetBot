@@ -1,12 +1,12 @@
 import psycopg2
 import yaml
-from player import Player
+from Player import Player
 
 
 class Database:
     
     def __init__(self):
-        credentials = yaml.load(open(".config/database_login.yml"))
+        credentials = yaml.load(open("config/database_login.yaml"))
         # connect to the mathbot database
         self.session = psycopg2.connect(
             host = credentials['login']['host'],
