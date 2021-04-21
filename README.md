@@ -1,4 +1,4 @@
-# Discord Pet Bot :x: :dog::cat::unicorn:
+# Discord Pet Bot :x: :dog::cat::unicorn: :x:
 Collect, hatch and raise pets with this discord bot!
 
 ## Adding To Your Server :factory:
