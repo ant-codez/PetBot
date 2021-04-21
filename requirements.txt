@@ -1,4 +1,4 @@
 discord.py==1.7.1
 psycopg2==2.8.6
 PyYAML==5.4.1
-enoji==1.2.0
+emoji==1.2.0
