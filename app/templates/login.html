@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Sign in</h2>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            <!-- Username input field -->
+            {{ form.username.label }}
+            <br>
+            {{ form.username(size=32) }}
+
+            <!-- Error handling -->
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+        </p>
+        <p>
+            <!-- Password input field -->
+            {{ form.password.label }}
+            <br>
+            {{ form.password(size = 32) }}
+
+            <!-- Error handling -->
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <!-- "Remember me" checkbox -->
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+
+        <!-- Submit button -->
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
