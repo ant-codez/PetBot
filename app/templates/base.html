@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>{{ title }} - Pet Bot</title>
+    {% else %}
+    <title>Pet Bot</title>
+    {% endif %}
+</head>
+<body>
+    <!-- Nav Bar -->
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <h1>Pet Bot - {{ title }}</h1>
+    {% block content %} {% endblock %}
+</body>
+</html>
