@@ -58,8 +58,8 @@ class Database:
         # find user_id that we are looking for
         self.cursor.execute(f"""
             select *
-            from "UserInfo".users
-            where "id" = {user_id};
+            from user_info.users
+            where "discord_id" = {user_id};
         """)
         
         user_record = self.cursor.fetchone()
@@ -85,7 +85,7 @@ class Database:
     def create_user(self, user_id: int, username: str):
         # find user_id that we are looking for
         self.commit_query(f"""
-            insert into "UserInfo".users ("id", "username", "eggs") values ({user_id}, '{username}', 1);
+            insert into user_info.users ("discord_id", "username", "eggs", "coins") values ({user_id}, '{username}', 1, 500);
         """)
 
         print(f"created user: {username}!")
@@ -95,9 +95,10 @@ class Database:
     #Save pet data into the PETS DB. | DB FORMAT: ID , SPECIES , COLOR, CLOSENESS, NAME, SIZE, ABILITYTYPE, RARITY
     def savePetToDB(self, user_id, username, pet):
         self.cursor = self.session.cursor()
+        petStats = [1,0,0,2,0,7,7]
         
-        self.cursor.execute("INSERT INTO \"UserInfo\".pets (id, pet_name, species, color, closeness, size, ability_type, rarity, owner) VALUES (%s,%s, %s,%s,%s, %s, %s,%s,%s)",
-        (user_id, pet.name, pet.species.name, pet.color.name, 0, pet.size.name, pet.ability_type.name, pet.rarity.name, username))
+        self.cursor.execute("INSERT INTO user_info.Pets (discord_id, pet_name, species, color, closeness, size, ability_type, rarity, owner, stats) VALUES (%s,%s, %s,%s,%s, %s, %s,%s,%s, %s)",
+        (user_id, pet.name, pet.species.name, pet.color.name, 0, pet.size.name, pet.ability_type.name, pet.rarity.name, username, petStats))
         
          # commit and unbind cursor
         self.session.commit()
@@ -111,11 +112,13 @@ class Database:
         self.cursor = self.session.cursor()
 
         try:
-            self.cursor.execute(f"SELECT * FROM \"UserInfo\".pets WHERE pet_name = '{petName}' AND id = {user_id}")
+            self.cursor.execute(f"SELECT * FROM User_info.pets WHERE pet_name = '{petName}' AND discord_id = {user_id}")
             # fetch the record from our execution
             user_record = self.cursor.fetchone()
             print(user_record)
             print("pet name: ", user_record[0])
+            
+            pet = Pet()
             return user_record
         except:
             print("No pet found, hatching egg...")
@@ -130,7 +133,7 @@ class Database:
         self.cursor = self.session.cursor()
         
         try:
-            self.cursor.execute(f"SELECT * FROM \"UserInfo\".users WHERE id = {user_id}")
+            self.cursor.execute(f"SELECT * FROM user_info.users WHERE discord_id = {user_id}")
             # fetch the record from our execution
             user_record = self.cursor.fetchone()
             print(user_record)

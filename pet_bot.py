@@ -6,6 +6,7 @@ from pet.abstract_pet import AbstractPet
 #TODO: remove this dependency
 import asyncio
 import emoji
+import random
 #TODO: get a database working
 from database import Database
 db = Database()
@@ -82,4 +83,23 @@ class PetBot(Bot):
                 await ctx.send("No pet with that name!")
             #pet = self.players[ctx.author.id].pets[name]
             
-
+        #shop used to buy fruit to increase pet stats
+        @self.client.command()
+        async def shop(ctx):
+            fruit = {"Round Fruit" : 80, "Square Fruit" : 80, "Triangle Fruit" : 80, "Heart Fruit" : 300, "Mushroom" : 300, "Strong Fruit" : 100, "Tasty Fruit" : 100}
+            string = "Welcome to the Pet shop, we are selling {} for {} coins."
+            key = random.choice(list(fruit))
+            await ctx.send(string.format(key, fruit[key]))
+            
+        #feed your pets food to increase their stats
+        @self.client.command()
+        async def feed(ctx, name):
+            
+            #check if pet exists
+            try:
+                pet = db.checkForPet(ctx.author.id, name)
+            except:
+                await ctx.send("Sorry that pet does not exist")
+            
+            if pet:
+                

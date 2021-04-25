@@ -22,7 +22,7 @@ class Species(Enum):
     OWL = auto()
     BAT = auto()
     WOLF = auto()
-    HOG = auto()
+    BOAR = auto()
     HORSE = auto()
     UNICORN = auto()
     BEE = auto()

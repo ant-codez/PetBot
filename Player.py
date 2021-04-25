@@ -9,6 +9,7 @@ class Player:
         self.name = name
         self.id = id
         self.eggs = 1
+        self.cash = 100
         self.pets = {}
     
     def giveEgg(self):
