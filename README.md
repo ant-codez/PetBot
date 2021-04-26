@@ -28,18 +28,34 @@ python 3.6 or above
 
 discord
 
-`pip install discord`
+`python3 -m pip install discord`
 
 
 psycopg2
 
-`pip install psycopg2`
+`python3 -m pip install psycopg2`
 
 
 PyYAML
 
-`pip install pyyaml`
+`python3 -m pip install pyyaml`
 
 emoji
 
-`pip install emoji`
+`python3 -m pip install emoji`
+
+flask
+
+`python3 -m pip install emoji`
+
+flask-sqlalchemy
+
+`python3 -m pip install flask-sqlalchemy`
+
+flask-migrate
+
+`python3 -m pip install flask-migrate`
+
+flask-wtf
+
+`python3 -m pip install flask-wtf`
