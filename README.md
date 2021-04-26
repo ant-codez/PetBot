@@ -46,7 +46,7 @@ emoji
 
 flask
 
-`python3 -m pip install emoji`
+`python3 -m pip install flask`
 
 flask-sqlalchemy
 
