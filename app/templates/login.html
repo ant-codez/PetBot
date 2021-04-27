@@ -5,13 +5,13 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
-            <!-- Username input field -->
-            {{ form.username.label }}
+            <!-- Email input field -->
+            {{ form.email.label }}
             <br>
-            {{ form.username(size=32) }}
+            {{ form.email(size=32) }}
 
             <!-- Error handling -->
-            {% for error in form.username.errors %}
+            {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
 
@@ -32,5 +32,6 @@
 
         <!-- Submit button -->
         <p>{{ form.submit() }}</p>
+        <p><a href="{{ url_for('register') }}">Register</a></p>
     </form>
 {% endblock %}
