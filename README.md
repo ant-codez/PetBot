@@ -59,3 +59,11 @@ flask-migrate
 flask-wtf
 
 `python3 -m pip install flask-wtf`
+
+flask-login
+
+`python3 -m pip install flask-login`
+
+email-validator
+
+`python3 -m pip install email-validator`

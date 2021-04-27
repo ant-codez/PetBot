@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Register</h2>
+<form action="" method="post">
+    <!-- for CRSF -->
+    {{ form.hidden_tag() }}
+    <p>
+        <!-- Email input field -->
+        {{ form.username.label }}
+        <br>
+        {{ form.username(size=32) }}
+        <br>
+
+        <!-- Error handling -->
+        {% for error in form.username.errors %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <!-- Email input field -->
+        {{ form.email.label }}
+        <br>
+        {{ form.email(size=32) }}
+        <br>
+
+        <!-- Error handling -->
+        {% for error in form.email.errors %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <!-- Password nput field -->
+        {{ form.password.label }}
+        <br>
+        {{ form.password(size=32) }}
+        <br>
+
+        <!-- Error handling -->
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        <!-- Password2 nput field -->
+        {{ form.password2.label }}
+        <br>
+        {{ form.password2(size=32) }}
+        <br>
+
+        <!-- Error handling -->
+        {% for error in form.password2.errors %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>{{form.submit}}</p>
+</form>
+
+{% endblock %}

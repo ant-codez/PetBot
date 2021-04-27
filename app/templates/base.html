@@ -9,8 +9,16 @@
     {% endif %}
 </head>
 <body>
-    <!-- Nav Bar -->
-    <a href="{{ url_for('login') }}">Login</a>
+    <!-- Nav Bar - Home -->
+    <a href="{{ url_for('home') }}">Home</a>
+
+    <!-- Nav Bar - Login/Logout -->
+    {% if current_user.is_anonymous %}
+    <a href="{{ url_for('login') }}">Logout</a>
+    {% else %}
+    <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+    <!-- Error Checking -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>
@@ -21,6 +29,7 @@
     {% endif %}
     {% endwith %}
 
+    <!-- Heading -->
     <h1>Pet Bot - {{ title }}</h1>
     {% block content %} {% endblock %}
 </body>
