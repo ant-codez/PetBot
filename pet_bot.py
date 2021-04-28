@@ -7,6 +7,9 @@ from pet.abstract_pet import AbstractPet
 import asyncio
 import emoji
 import random
+import sys
+sys.path.append('./pet/')
+import init_Pet
 #TODO: get a database working
 from database import Database
 db = Database()
@@ -30,9 +33,9 @@ class PetBot(Bot):
 
         #use to test new features
         @self.client.command()
-        async def test(ctx):
-            db.checkTotalEggs(ctx.author.id)
-            await ctx.send("Test complete...")
+        async def test(ctx, name):
+            pet = db.checkForPet(ctx.author.id, name)
+            db.updatePetStats(ctx.author.id, name, pet.getStats())
         # hatch a players egg
         @self.client.command()
         async def hatch(ctx):
@@ -76,12 +79,11 @@ class PetBot(Bot):
             
             #check if pet is in the db
             pet = db.checkForPet(ctx.author.id, name)
+            
             if pet:
-                output = "{} is a {} And looks like {}. They are a {} sized pet. They are the color {} and have a closeeness of {}. Your pet is {}." 
-                await ctx.send(output.format(pet[0], pet[1], emoji.emojize(':' + pet[1].lower() +':', use_aliases=True), pet[5], pet[3], pet[4], pet[7]))   
+                await ctx.send(pet.printStats())   
             else:
                 await ctx.send("No pet with that name!")
-            #pet = self.players[ctx.author.id].pets[name]
             
         #shop used to buy fruit to increase pet stats
         @self.client.command()
@@ -95,11 +97,23 @@ class PetBot(Bot):
         @self.client.command()
         async def feed(ctx, name):
             
+            #radomly will choose one stat to upgrade
+            stats = ['Swim', 'Fly', 'Run', 'Power', 'Stamina']
+            #choose random stat to lv up
+            key = random.choice(stats)
             #check if pet exists
             try:
                 pet = db.checkForPet(ctx.author.id, name)
             except:
-                await ctx.send("Sorry that pet does not exist")
+                await ctx.send("ERROR")
             
             if pet:
+                string = "You have fed your pet! Your pet's {} increased by {}";
                 
+                p = pet.feed(key)
+                print("PET STATS", pet.getStats())
+                db.updatePetStats(ctx.author.id, name, pet.getStats())
+                
+                await ctx.send(string.format(key, p))
+            else:
+                await ctx.send("Sorry that pet does not exist")

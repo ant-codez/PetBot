@@ -1,7 +1,13 @@
 import psycopg2
 import yaml
-from Player import Player
+import sys
 
+sys.path.append('./pet/')
+
+from Player import Player
+from pet.abstract_pet_factory import AbstractPetFactory
+from pet.abstract_pet import AbstractPet
+import init_Pet
 
 class Database:
     
@@ -92,10 +98,10 @@ class Database:
 
         return self.record_from_user_id(user_id)
     
-    #Save pet data into the PETS DB. | DB FORMAT: ID , SPECIES , COLOR, CLOSENESS, NAME, SIZE, ABILITYTYPE, RARITY
+    #Save pet data into the PETS DB. | DB FORMAT: ID , SPECIES , COLOR, CLOSENESS, NAME, SIZE, ABILITYTYPE, RARITY, STATS[]
     def savePetToDB(self, user_id, username, pet):
         self.cursor = self.session.cursor()
-        petStats = [1,0,0,2,0,7,7]
+        petStats = [0,0,0,0,0,7,7]
         
         self.cursor.execute("INSERT INTO user_info.Pets (discord_id, pet_name, species, color, closeness, size, ability_type, rarity, owner, stats) VALUES (%s,%s, %s,%s,%s, %s, %s,%s,%s, %s)",
         (user_id, pet.name, pet.species.name, pet.color.name, 0, pet.size.name, pet.ability_type.name, pet.rarity.name, username, petStats))
@@ -113,13 +119,14 @@ class Database:
 
         try:
             self.cursor.execute(f"SELECT * FROM User_info.pets WHERE pet_name = '{petName}' AND discord_id = {user_id}")
-            # fetch the record from our execution
-            user_record = self.cursor.fetchone()
-            print(user_record)
-            print("pet name: ", user_record[0])
+            # fetch the row from the db contatining pet information
+            p = self.cursor.fetchone()
+            print(p)
+            #print("pet stats: ", p[9])
             
-            pet = Pet()
-            return user_record
+            pet = init_Pet.DBPet(p[0], p[1], p[3], p[4], p[5], p[6], p[7], p[9])
+            print(pet.printStats())
+            return pet
         except:
             print("No pet found, hatching egg...")
             return False
@@ -139,3 +146,28 @@ class Database:
             print(user_record)
         except:
             print("idk")
+    
+    #update player coins in DB
+    def updateCoins(self, user_id, coins):
+        self.cursor = self.session.cursor()
+        
+        try:
+            self.cursor.execute(f"UPDATE user_info.users SET coins = {coins}  WHERE discord_id = '{user_id}'")
+            print("DB coins updates successfully")
+        except:
+            print("DB ERROR")
+    
+    #update pet stats in DB
+    def updatePetStats(self, user_id, petName, petStats):
+        self.cursor = self.session.cursor()
+        
+        try:
+            self.cursor.execute(f"UPDATE user_info.pets SET stats = ARRAY{petStats}  WHERE pet_name = '{petName}' AND discord_id = {user_id}")
+            print("DB updates successfully")
+        except:
+            print("DB ERROR")
+        # commit and unbind cursor
+        self.session.commit()
+        self.cursor.close()  
+        
+        

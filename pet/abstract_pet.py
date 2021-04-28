@@ -10,12 +10,14 @@ class AbstractPet:
         self.subtype: AbilityType = subtype
         self.color: Color = color
         self.rarity: Rarity = rarity
+        self.closeness= 0
+        self.hunger= 100
         #Pet stats used for races and games
-        self.swim:          0
-        self.fly:           0
-        self.run:           0
-        self.power:         0
-        self.stamina:       0
+        self.swim=          0
+        self.fly=          0
+        self.run=           0
+        self.power=         0
+        self.stamina=       0
         #Hidden stats
-        self.luck:          0
-        self.intelligence:  0
+        self.luck=          0
+        self.intelligence=  0
