@@ -18,6 +18,15 @@
     {% else %}
     <a href="{{ url_for('logout') }}">Logout</a>
     {% endif %}
+
+    <!-- Nav Bar - Profile -->
+    <a href="{{ url_for('user', user_id=current_user.user_id) }}">Profile</a>
+
+    <!-- Nav Bar - Edit Profile -->
+    {% if current_user.is_anonymous %}
+    <a href="{{ url_for('edit_profile') }}">Profile</a>
+    {% endif %}
+
     <!-- Error Checking -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
