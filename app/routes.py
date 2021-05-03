@@ -65,8 +65,6 @@ def register():
             if user is not None:
                 username = form.username.data + suffix
                 break
-        print("here")
-
         user = User(user_id=username, email=form.email.data, source='website')
         user.set_password(form.password.data)
         db.session.add(user)
@@ -76,18 +74,22 @@ def register():
 
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/edit_profile')
+@app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm()
-    if form.validate_on_submit:
+    if form.validate_on_submit():
         # TODO: make this a function - generate_username_with_suffix(username)
-        username = ""
+        username = form.username.data
+
         while True:
             suffix = '-' + str(random.randint(1000, 9999))
-            user = User.query.filter_by(user_id=form.username.data + suffix)
+            unique_username = str(username) + suffix
+            #print(unique_username)
+            user = User.query.filter_by(user_id=unique_username).first()
             if user is None:
-                username = form.username.data + suffix
+                username = unique_username
+                break
         current_user.user_id = username
         current_user.about_me = form.about_me.data
         db.session.commit()
@@ -101,7 +103,6 @@ def user(user_id):
 
     return render_template('user.html', user=user)
 
-@app.route('/')
 @app.route('/protected')
 @login_required
 def protected():
