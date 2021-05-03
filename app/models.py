@@ -1,15 +1,21 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db, login
+from hashlib import md5
+from datetime import datetime
+import random
+
 
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
+    user_id = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True, nullable=True)
     password_hash = db.Column(db.String(128), nullable=True)
     source = db.Column(db.String(128))
     discord_id = db.Column(db.BigInteger, unique=True, nullable=True)
+    about_me = db.Column(db.String(255))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     # one-to-many pet
     pets = db.relationship('Pet', backref='user')
     # one-to-one inventory
@@ -22,9 +28,18 @@ class User(UserMixin, db.Model):
     # used for retrieving a password given a hash
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{digest}?d=robohash&s={size}'
     
+    def username(self):
+        return self.user_id[0 : self.user_id.rfind('-')]
+
+
+
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'<User {self.user_id}>'
 
 # one-to-one relationship
 # one user can only have one inventory
