@@ -1,5 +1,5 @@
 from discord_api.bot import Bot
-
+from discord.ext import tasks
 from Player import Player
 from pet.abstract_pet import AbstractPet
 
@@ -84,15 +84,26 @@ class PetBot(Bot):
                 await ctx.send(pet.printStats())   
             else:
                 await ctx.send("No pet with that name!")
+        
+        #get coins with this cool command!
+        @self.client.command()
+        async def coins(ctx):
+            await ctx.send("Congrats you have gained 500 coins!")
             
+            totalCoins = db.getCoins(ctx.author.id)
+            
+            if totalCoins is not False:
+                await ctx.send(f"You now have {totalCoins + 500} coins")
+                db.updateCoins(ctx.author.id, totalCoins + 500)
+            else:
+                await ctx.send("ERROR UPDATING COIN DATA")
+                
         #shop used to buy fruit to increase pet stats
         @self.client.command()
         async def shop(ctx):
-            fruit = {"Round Fruit" : 80, "Square Fruit" : 80, "Triangle Fruit" : 80, "Heart Fruit" : 300, "Mushroom" : 300, "Strong Fruit" : 100, "Tasty Fruit" : 100}
             string = "Welcome to the Pet shop, we are selling {} for {} coins."
-            key = random.choice(list(fruit))
-            await ctx.send(string.format(key, fruit[key]))
-            
+            await ctx.send(string.format(self.shopItem, self.shopItemPrice))
+                 
         #feed your pets food to increase their stats
         @self.client.command()
         async def feed(ctx, name):

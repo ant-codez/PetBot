@@ -1,5 +1,6 @@
 import emoji
 import random
+
 #this class is used to init pets from the database
 class DBPet:
     def __init__(self, name, species, color, closeness, size, ability_type, rarity, stats):

@@ -3,13 +3,18 @@ import asyncio
 from discord.ext import commands as discord_commands
 
 import textwrap
+import random
 
 class Bot:
     def __init__(self, command_prefix: str, token: str):
         # Configure Bot
         self.client = discord_commands.Bot(command_prefix = command_prefix)
         self.token = token
-
+        
+        #variable used for shop command
+        self.shopItem = None
+        self.shopItemPrice = 0
+        
         # ready event
         @self.client.event
         async def on_ready():
@@ -19,20 +24,6 @@ class Bot:
         @self.client.command()
         async def ping(ctx, *args):
             await ctx.send(f'You pinged PetBot! {args}')
-
-        """
-        Figure out how to do this add_command function.
-
-        Basically I want to be able to pass in a function in a way that
-        makes it easier for the user of this class to create commands
-
-        Here is the general idea of what I want to do:
-
-        def add_command(command: str, function):
-            @self.client.command()
-            function
-
-        """
 
         # $userinfo will print some user information
         @self.client.command()
@@ -80,7 +71,23 @@ class Bot:
             output += '\n'
             
             await ctx.send(output)
-
+   
+    #testing out timer loops. Updating shop items every minute.
+    async def updateShop(self):
+        fruit = {"Round Fruit" : 80, "Square Fruit" : 80, "Triangle Fruit" : 80, "Heart Fruit" : 300, "Mushroom" : 300, "Strong Fruit" : 100, "Tasty Fruit" : 100}
+        
+        await self.client.wait_until_ready();
+        print("UPADTING SHOP")
+        
+        while not self.client.is_closed():
+            self.shopItem = random.choice(list(fruit))
+            self.shopItemPrice = fruit[self.shopItem]
+            print("We are selling item: ", self.shopItem)
+            await asyncio.sleep(60 * 3)
+        
     # this will start the bot and must be called after commands are constructed
     def start(self):
+        #call task to be run in background
+        self.client.loop.create_task(self.updateShop())
+        
         self.client.run(self.token)

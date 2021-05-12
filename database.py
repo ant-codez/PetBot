@@ -147,6 +147,21 @@ class Database:
         except:
             print("idk")
     
+    #return the total number of coins the player has
+    def getCoins(self, user_id):
+        self.cursor = self.session.cursor()
+        
+        try:
+            self.cursor.execute(f"SELECT * FROM user_info.users WHERE discord_id = {user_id}")
+            # fetch the record from our execution
+            user_record = self.cursor.fetchone()
+            #print(user_record)
+            coins = user_record[3]
+            return coins
+        except:
+            print("Error finding Player user info")
+            return False
+    
     #update player coins in DB
     def updateCoins(self, user_id, coins):
         self.cursor = self.session.cursor()
@@ -156,6 +171,9 @@ class Database:
             print("DB coins updates successfully")
         except:
             print("DB ERROR")
+        
+        self.session.commit()
+        self.cursor.close() 
     
     #update pet stats in DB
     def updatePetStats(self, user_id, petName, petStats):
